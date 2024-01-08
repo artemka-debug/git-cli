@@ -7,9 +7,12 @@ import (
 
 	"github.com/artemka-debug/git-cli/src/utils"
 	"github.com/urfave/cli/v2"
+	"github.com/lainio/err2"
 )
 
-func action(c *cli.Context) error {
+func action(c *cli.Context) (err error) {
+	defer err2.Handle(&err)
+	
 	agrumentLength := c.Args().Len()
 
 	if agrumentLength != 2 {
@@ -20,25 +23,13 @@ func action(c *cli.Context) error {
 	commitMessage := c.Args().Get(1)
 
 	fmt.Printf("Adding files to git by pattern <%s>...\n", addPattern)
-
-	err := utils.RunWithError(exec.Command("git", "add", addPattern))
-	if err != nil {
-		return err
-	}
-
+	err = utils.RunWithError(exec.Command("git", "add", addPattern))
+	
 	fmt.Printf("Commiting files to git with message <%s>...\n", commitMessage)
-
 	err = utils.RunWithError(exec.Command("git", "commit", "-m", commitMessage))
-	if err != nil {
-		return err
-	}
 
 	fmt.Println("Pushing files to git...")
- 
-	err = utils.RunWithError(exec.Command("git", "push"))
-	if err != nil {
-		return err
-	}
+ 	err = utils.RunWithError(exec.Command("git", "push"))
 
 	return nil
 }
