@@ -1,9 +1,7 @@
 package main
-
 import (
 	"log"
 	"os"
-
 	"github.com/artemka-debug/git-cli/src/commands/git-add-commit-push"
 	"github.com/artemka-debug/git-cli/src/commands/merge-all-commits-into-one"
 	"github.com/urfave/cli/v2"
